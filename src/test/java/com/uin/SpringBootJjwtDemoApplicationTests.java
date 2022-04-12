@@ -1,9 +1,6 @@
 package com.uin;
 
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.JwtBuilder;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.impl.Base64Codec;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,6 +11,12 @@ import java.util.Date;
 @SpringBootTest
 public class SpringBootJjwtDemoApplicationTests {
 
+    /**
+     * 服务端创建token
+     *
+     * @author wanglufei
+     * @date 2022/4/12 3:06 PM
+     */
     @Test
     public void createTokenTest() {
         //创建JwtBuilder对象
@@ -39,6 +42,29 @@ public class SpringBootJjwtDemoApplicationTests {
 
         //  每次加密的header和payload是一样的
         //  signature 每次都是不一样的
+    }
+
+    /**
+     * 解析token
+     *
+     * @author wanglufei
+     * @date 2022/4/12 3:08 PM
+     */
+    @Test
+    public void paresToken() {
+        String token = "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI4ODg4Iiwic3ViIjoidWluIiwiaWF0IjoxNjQ5NzQ2MzU1fQ.wQFvWMy_zzqU9MDTqFERNYlbTEsByETZE2713Q8drOk";
+        //解析token claims其实就是Payload的对象
+        Claims claims = Jwts.parser()
+                //密钥
+                .setSigningKey("xxxxx")
+                //把token放进去
+                .parseClaimsJws(token)
+                //拿到主体
+                .getBody();
+
+        System.out.println("id"+claims.getId());
+        System.out.println("sub"+claims.getSubject());
+        System.out.println("IssueAt"+claims.getIssuedAt());
     }
 
 }
